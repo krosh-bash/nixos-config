@@ -108,7 +108,7 @@
       nixosConfigurations = {
         # Имя вашей готовой конфигурации системы. Вызывается через: sudo nixos-rebuild switch --flake .#krosh
         krosh = mkHost "krosh" 
-          [ ./hosts/my-laptop.nix ] # Подключаем специфичный конфиг вашего ноутбука/ПК
+          [ ] # Подключаем специфичный конфиг вашего ноутбука/ПК
           [ ];
       };
 

@@ -9,7 +9,7 @@
     ./packages.nix
     ./keyboard.nix
     ./font-packages.nix
-    ./network.nix
+    
     
     # ОБЯЗАТЕЛЬНО: Подключаем модуль home-manager на уровне системы
     # Если вы используете Flakes, это может быть: inputs.home-manager.nixosModules.home-manager

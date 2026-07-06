@@ -58,10 +58,7 @@
   ];
 
 
-  nixos git:(main) cat font-packages.nix
-{ config, pkgs, ... }:
 
-{
   # Устанавливаем шрифты
   fonts.packages = with pkgs; [
 
@@ -99,6 +96,6 @@
       emoji = [ "Noto Color Emoji" ];
     };
   };
-}
+
 }
 

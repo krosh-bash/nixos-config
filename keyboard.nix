@@ -15,13 +15,6 @@
     LC_TIME = "ru_RU.UTF-8";
   };
 
-  # Раскладка клавиатуры (переключение по Caps Lock)
-  services.xserver.xkb = {
-    layout = "us,ru";
-    variant = " ,";
-    options = "grp:caps_toggle";
-  };
-
   # Применять настройки клавиатуры в консоли (TTY)
   console.useXkbConfig = true;
 }

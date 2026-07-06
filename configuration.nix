@@ -38,6 +38,7 @@
   # 3. Сеть, локализация и системное время
   # =========================================================================
   networking.hostName = "krosh";
+  networking.networkmanager.enable = true;
   networking.nftables.enable = true;
 
   # Настройка часового пояса для Уфы и синхронизация времени

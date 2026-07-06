@@ -8,7 +8,7 @@
     ./hardware-configuration.nix
     ./packages.nix
     ./keyboard.nix
-    ./font-packages.nix
+
     
     
     # ОБЯЗАТЕЛЬНО: Подключаем модуль home-manager на уровне системы

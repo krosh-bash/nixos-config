@@ -1,0 +1,24 @@
+#! /usr/bin/env bash
+#
+# Git log and Git show wrapper
+
+# ansi flag is needed for the git log colors
+#
+if git rev-parse --is-inside-work-tree &>/dev/null; then
+  git log \
+    --oneline \
+    --color=always \
+    --format='%C(auto)%h %C(green)%s %C(yellow)%cr' |
+    grep -v HEAD |
+    fzf \
+      --ansi \
+      --no-sort \
+      --layout=reverse \
+      --margin=1% \
+      --height=100% \
+      --border=rounded \
+      --preview-window=right:50% \
+      --preview='git show {+1} --color=always'
+else
+  echo "You are not inside a Git repository."
+fi

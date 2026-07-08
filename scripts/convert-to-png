@@ -1,0 +1,16 @@
+#! /usr/bin/env bash
+#
+# Convert all images to png, make them 1080p and remove original
+
+dir="$PWD"
+if [ "$#" -ne 0 ]; then
+  dir="$1"
+fi
+
+find "$dir" -name "*.jpg" -exec mogrify -format png {} \;
+find "$dir" -name "*.jpg" -exec rm {} \;
+find "$dir" -name "*.jpeg" -exec mogrify -format png {} \;
+find "$dir" -name "*.jpeg" -exec rm {} \;
+find "$dir" -name "*.webp" -exec mogrify -format png {} \;
+find "$dir" -name "*.webp" -exec rm {} \;
+# find "$dir" -type f -name "*.png" -exec convert {} -resize 1920x1080 -quality 90 {} \;

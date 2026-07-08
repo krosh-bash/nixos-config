@@ -1,0 +1,19 @@
+#! /usr/bin/env bash
+#
+# For River
+# Send notification of all running programs app id via lwst
+#
+windows=$(lswt | awk '
+NR > 1 {
+    # Split the line into fields manually while respecting quotes
+    match($0, /^[^ ]+ +("[^"]+"|[^ ]+)/, arr);
+    app_id = arr[1] == "" ? arr[2] : arr[1];
+    gsub(/^"|"$/, "", app_id);  # Remove surrounding quotes
+    print length(app_id), app_id
+}' | sort -n | cut -d' ' -f2-)
+
+if [ -z "$windows" ]; then
+  notify-send -t 1500 "No windows open"
+else
+  notify-send -t 1500 "$windows"
+fi

@@ -1,0 +1,22 @@
+#! /usr/bin/env bash
+
+walldir="$HOME/wallpapers/Images"
+lines=4
+columns=7
+icons_size=256
+
+theme="listview { lines: ${lines}; columns: ${columns}; cycle:true; spacing:5px;}
+      element { padding:0px; margin:0px; }
+      element-icon { size: ${icons_size}px; }
+      element-text { enabled:false; }"
+
+export PREVIEW=true
+selected=$(find "$walldir" -type f |
+  while read -r A; do echo -en "$A\x00icon\x1f$A\n"; done |
+  rofi -dmenu \
+    -show-icons \
+    -p "Wallpaper" \
+    -theme "$HOME/.config/rofi/fullscreen.rasi" \
+    -theme-str "$theme")
+
+[[ -n "$selected" ]] && "$HOME/scripts/set-wall" "$selected"

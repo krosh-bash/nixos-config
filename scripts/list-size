@@ -1,0 +1,7 @@
+#! /usr/bin/env bash
+#
+# List directory size in the Current directory
+# command ls | xargs -d '\n' du -sh | sort -hr
+
+# Won't work when run directly on zsh shell
+du -sh -- .[!.]* */ | sort -hr

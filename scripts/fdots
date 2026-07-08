@@ -1,0 +1,19 @@
+#! /usr/bin/env bash
+#
+# Fuzzy find through dotfiles and scripts
+
+fd . --base-directory="$HOME/dotfiles" \
+  --max-depth 5 \
+  --type f \
+  --no-hidden \
+  --exclude '*/foot/themes/*' \
+  --exclude .git \
+  --ignore-file ~/home.gitignore \
+  --color=always |
+  fzf \
+    --ansi \
+    --height=100% \
+    --border=rounded \
+    --preview-window=right:60% \
+    --preview="bat $HOME/dotfiles/{} --color=always -p" |
+  xargs -r -o -I{} nvim "$HOME/dotfiles/{}"

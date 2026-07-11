@@ -1,6 +1,6 @@
 // Input device configuration.
 input {
-  keyboard {
+    keyboard {
     xkb {
       layout "us,ru"
       variant ",bak"
@@ -51,7 +51,13 @@ input {
 // https://yalter.github.io/niri/Configuration:-Layout
 layout {
   gaps 3 
-
+  blur {
+        // Включаем размытие для полупрозрачных окон
+        enable;
+        
+        // Радиус размытия (чем больше число, тем сильнее размытие)
+        radius 12;
+    }
   // When to center a column when changing focus, options are:
   // - "never", default behavior, focusing an off-screen column will keep at the left
   //   or right edge of the screen.
@@ -123,7 +129,7 @@ spawn-at-startup "wl-paste" "--type" "text" "--watch" "cliphist" "store"
 spawn-at-startup "wl-paste" "--type" "image" "--watch" "cliphist" "store"
 //spawn-sh-at-startup "qs -c noctalia-shell"
 spawn-at-startup "waybar"
-spawn-at-startup "./utilits/scripts/random-swaybg"
+spawn-at-startup "/etc/nixos/scripts/random-swaybg"
 spawn-at-startup "swaync"
 spawn-at-startup "udiskie" "-n"
 
@@ -305,14 +311,14 @@ binds {
     //spawn "cliphist list | rofi --dmenu | cliphist decode | wl-copy";
 //}
   //Mod+Shift+X { spawn "sh" "-c" "cliphist list | rofi --dmenu | cliphist decode | wl-copy"; }
-  Mod+Z { spawn "./utilits/scripts/rofi-clipboard"; }
-  Mod+Shift+Escape { spawn "./utilits/scripts/rofi-power"; }                      // меню питания
-  Mod+Shift+W { spawn "./utilits/scripts/rofi-wifi"; }                       // Wi‑Fi
+  Mod+Z { spawn "/etc/nixos/scripts/rofi-clipboard"; }
+  Mod+Shift+Escape { spawn "/etc/nixos/scripts/rofi-power"; }                      // меню питания
+// Mod+Shift+W { spawn "./scripts/rofi-wifi"; }                       // Wi‑Fi
   Mod+Shift+S { spawn "udiskie-umount" "-a"; }
-  Mod+A { spawn "./utilits/scripts/random-swaybg"; }
+  Mod+A { spawn "/etc/nixos/scripts/random-swaybg"; }
   //:Mod+Ctrl+R { spawn "~/utilits/scripts/refresh-mirrors"}
-  Mod+Shift+B { spawn "./utilits/scripts/rofi-bluetooth"; }
-  Super+X { spawn "~/.local/bin/fuzzel-calc"; }
+  Mod+Shift+B { spawn "/etc/nixos/scripts/rofi-bluetooth"; }
+//  Super+X { spawn "~/.local/bin/fuzzel-calc"; }
   // Audio control
   XF86AudioRaiseVolume allow-when-locked=true { spawn-sh "wpctl set-volume @DEFAULT_AUDIO_SINK@ 0.05+ -l 1.0"; }
   XF86AudioLowerVolume allow-when-locked=true { spawn-sh "wpctl set-volume @DEFAULT_AUDIO_SINK@ 0.05-"; }

@@ -8,8 +8,8 @@
     ./hardware-configuration.nix
     ./packages.nix
     ./keyboard.nix
-
-    
+    ./systemd-services.nix
+#    ./stylix.nix    
     
     # ОБЯЗАТЕЛЬНО: Подключаем модуль home-manager на уровне системы
     # Если вы используете Flakes, это может быть: inputs.home-manager.nixosModules.home-manager
@@ -59,7 +59,11 @@
   # =========================================================================
   services.displayManager.sddm.enable = true;
   services.displayManager.sddm.wayland.enable = true;
-
+  
+#  nix.settings = {
+#    substituters = [ "https://vicinae.cachix.org" ];
+#    trusted-public-keys = [ "vicinae.cachix.org-1:1kDrfienkGHPYbkpNj1mWTr7Fm1+zcenzgTizIcI3oc=" ];
+#  };
   # Включаем Niri на системном уровне для регистрации сессии в SDDM
   programs.niri.enable = true;
   programs.xwayland.enable = true;
@@ -82,6 +86,7 @@
   # =========================================================================
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
   nixpkgs.config.allowUnfree = true;
+
   
   programs.nix-ld.enable = true;
   services.envfs.enable = true;

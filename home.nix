@@ -1,10 +1,13 @@
 { pkgs, config, lib, ... }:
 
 let
-  c = config.lib.stylix.colors;   # для цветов в Rofi
+  c = config.lib.stylix.colors;
+  terminalFont = config.stylix.fonts.monospace;
+  terminalFontSize = config.stylix.fonts.sizes.terminal;
+  terminalOpacity = config.stylix.opacity.terminal;
 in
 {
-  imports = [ ];   # пустой, все модули подключаются из flake.nix
+  imports = [ ./modules/niri/common.nix ];
 
   home.username = "krosh";
   home.homeDirectory = "/home/krosh";
@@ -12,15 +15,14 @@ in
 
   stylix = {
     enable = true;
-    image = ./wallpaper.jpg;   # <--- вот конкретный файл
+    image = ./wallpaper.jpg;
     polarity = "dark";
-    base16Scheme = "${pkgs.base16-schemes}/share/themes/gruvbox-dark-medium.yaml";
     fonts = {
       monospace = {
-  package = pkgs.nerd-fonts.jetbrains-mono;
-  name = "JetBrainsMono Nerd Font";
-	};
-        sizes = {
+        package = pkgs.nerd-fonts.jetbrains-mono;
+        name = "JetBrainsMono Nerd Font";
+      };
+      sizes = {
         terminal = 11;
         popups = 11;
       };
@@ -29,12 +31,10 @@ in
       terminal = 0.75;
     };
     targets = {
-      alacritty.enable = true;
       gtk.enable = true;
       mako.enable = true;
-      gnome-text-editor.enable = false;
-      gnome.enable = false;
-      rofi.enable = true; 
+      rofi.enable = true;
+#      niri.enable = true;   
     };
   };
 
@@ -50,6 +50,7 @@ in
     bluez
     libnotify
     swaylock
+    swaybg           # <-- добавляем
   ];
 
   programs.bash = {
@@ -66,14 +67,62 @@ in
           columns = 100;
           lines = 25;
         };
+        opacity = terminalOpacity;
       };
-      colors = {
-        draw_bold_text_with_bright_colors = true;
+      colors = lib.mkForce {
+        primary = {
+          background = "#${c.base00}";
+          foreground = "#${c.base05}";
+        };
+        cursor = {
+          text = "#${c.base00}";
+          cursor = "#${c.base05}";
+        };
+        normal = {
+          black   = "#${c.base00}";
+          red     = "#${c.base08}";
+          green   = "#${c.base0B}";
+          yellow  = "#${c.base0A}";
+          blue    = "#${c.base0D}";
+          magenta = "#${c.base0E}";
+          cyan    = "#${c.base0C}";
+          white   = "#${c.base05}";
+        };
+        bright = {
+          black   = "#${c.base03}";
+          red     = "#${c.base08}";
+          green   = "#${c.base0B}";
+          yellow  = "#${c.base0A}";
+          blue    = "#${c.base0D}";
+          magenta = "#${c.base0E}";
+          cyan    = "#${c.base0C}";
+          white   = "#${c.base07}";
+        };
+        indexed_colors = [
+          { index = 16; color = "#${c.base09}"; }
+          { index = 17; color = "#${c.base0F}"; }
+        ];
+      };
+      font = {
+        normal = {
+          family = terminalFont.name;
+          style = "Regular";
+        };
+        bold = {
+          family = terminalFont.name;
+          style = "Bold";
+        };
+        italic = {
+          family = terminalFont.name;
+          style = "Italic";
+        };
+        size = terminalFontSize;
       };
     };
   };
 
   home.pointerCursor = {
+    enable = true;
     name = "phinger-cursors-light";
     package = pkgs.phinger-cursors;
     size = 24;
@@ -94,16 +143,12 @@ in
     enable = true;
     defaultApplications = {
       "image/jpeg" = [ "imv-dir.desktop" ];
-      "image/png" = [ "imv-dir.desktop" ];
-      "image/gif" = [ "imv-dir.desktop" ];
+      "image/png"  = [ "imv-dir.desktop" ];
+      "image/gif"  = [ "imv-dir.desktop" ];
       "image/webp" = [ "imv-dir.desktop" ];
     };
   };
 
 
 
-  xdg.configFile."niri/config.kdl" = {
-    source = ./modules/niri/config.kdl;
-    force = true;
-  };
 }

@@ -52,10 +52,11 @@
                 extraSpecialArgs = { inherit hostname; };
                 users.${username} = {
                   imports = [
+		    ./modules/niri/common.nix
                     ./home.nix
                     stylix.homeModules.stylix   # <-- модуль Stylix только здесь
                   ] ++ extraHomeModules;
-                  xdg.configFile = generateWaybarFiles ./modules/waybar;
+                  xdg.configFile = generateWaybarFiles ./modules/waybar;                  
                 };
               };
             }

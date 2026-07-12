@@ -51,13 +51,7 @@ input {
 // https://yalter.github.io/niri/Configuration:-Layout
 layout {
   gaps 3 
-  blur {
-        // Включаем размытие для полупрозрачных окон
-        enable;
-        
-        // Радиус размытия (чем больше число, тем сильнее размытие)
-        radius 12;
-    }
+    
   // When to center a column when changing focus, options are:
   // - "never", default behavior, focusing an off-screen column will keep at the left
   //   or right edge of the screen.
@@ -220,7 +214,6 @@ workspace "8"
 //   match app-id="chromium|firefox|obsidian|vesktop|org.telegram.desktop|^blender$"
 //   open-maximized-to-edges true
 // }
-
 window-rule {
   match app-id="obsidian"
   open-on-workspace "3"
@@ -249,7 +242,9 @@ window-rule {
   }
 }
 
-
+window-rule {
+	opacity 0.8
+}
 
 window-rule {
   match app-id="^(mpv|imv|anki|showmethekey-gtk|Emulator|Android Emulator|blueman-manager)$"

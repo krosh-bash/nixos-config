@@ -48,42 +48,42 @@ in
         focus-follows-mouse max-scroll-amount="0%"
       }
 
-      layout {
-        gaps 3
-        center-focused-column "never"
+layout {
+  gaps 3
+  center-focused-column "never"
 
-        preset-column-widths {
-          proportion 0.5
-          proportion 0.66
-          proportion 0.33
-        }
+  preset-column-widths {
+    proportion 0.5
+    proportion 0.66
+    proportion 0.33
+  }
 
-        preset-window-heights {
-          proportion 0.5
-          proportion 1.0
-        }
+  preset-window-heights {
+    proportion 0.5
+    proportion 1.0
+  }
 
-        default-column-width { proportion 0.5; }
+  default-column-width { proportion 0.5; }
 
-        focus-ring {
-          off
-          width 5
-          inactive-color "#${c.base03}"
-          active-gradient from="#${c.base0D}" to="#${c.base0A}" angle=135
-        }
+  // Отключаем фокус-кольцо полностью
+  focus-ring {
+    off
+  }
 
-        border {
-          // off
-          width 5
-          inactive-color "#${c.base03}"
-          active-gradient from="#${c.base08}" to="#${c.base0B}" angle=135
-          urgent-color "#${c.base08}"
-        }
+  // Настраиваем границу
+  border {
+    width 3
+    inactive-color "#${c.base03}"
+    active-color "#${c.base0D}"
+    urgent-color "#${c.base08}"
+  }
 
-        shadow {
-          off
-        }
-      }
+  // Тени отключены
+  shadow {
+    off
+  }
+}
+
 
       spawn-at-startup "gnome-keyring"
       spawn-at-startup "hypridle"

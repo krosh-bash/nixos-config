@@ -7,13 +7,17 @@
     tg-ws-proxy.url = "github:pialtor/tg-ws-proxy-flake";
     zen-browser.url = "github:youwen5/zen-browser-flake";
     zen-browser.inputs.nixpkgs.follows = "nixpkgs";
+      nixvim = {
+      url = "github:nix-community/nixvim";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
 
-  outputs = { self, nixpkgs, stylix, tg-ws-proxy, zen-browser, home-manager, ... }:
+  outputs = { self, nixpkgs, stylix, tg-ws-proxy, zen-browser, home-manager, nixvim, ... }:
     let
       system = "x86_64-linux";
       username = "krosh";
@@ -43,7 +47,8 @@
           modules = [
             { nixpkgs.overlays = [ zen-overlay ]; }
             ./configuration.nix
-            home-manager.nixosModules.home-manager
+            nixvim.nixosModules.nixvim
+	    home-manager.nixosModules.home-manager
             {
               home-manager = {
                 useGlobalPkgs = true;

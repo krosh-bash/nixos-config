@@ -138,6 +138,35 @@ in
       package = pkgs.phinger-cursors;
     };
   };
+  
+home.sessionVariables = {
+    EDITOR = "nvim";
+  };
+
+  programs.yazi = {
+    enable = true;
+
+    settings = {
+      opener = {
+        edit = [
+          { run = ''nvim "$@"''; block = true; for = "unix"; }
+        ];
+      };
+
+      open = {
+        prepend_rules = [
+          { url = "*.txt";  use = "edit"; }
+          { url = "*.md";   use = "edit"; }
+          { url = "*.json"; use = "edit"; }
+          { url = "*.toml"; use = "edit"; }
+          { url = "*.y*ml"; use = "edit"; }
+          { url = "*.sh";   use = "edit"; }
+          { url = "*.lua";  use = "edit"; }
+          # Добавьте все нужные расширения
+        ];
+      };
+    };
+  };
 
   xdg.mimeApps = {
     enable = true;

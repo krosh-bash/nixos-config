@@ -399,6 +399,27 @@ pulseaudio#microphone {
   padding-right: 8px;
 }
 
+#custom-prayer {
+    background-color: #1e1e2e; /* Цвет фона капсулы (измените под вашу тему, если отличается) */
+    color: #cdd6f4;            /* Цвет текста */
+    border-radius: 12px;       /* Овальное скругление краев капсулы */
+    padding: 0 10px;           /* Внутренние отступы слева и справа от текста */
+    margin: 4px 2px;           /* Внешние отступы, чтобы капсулы не слипались */
+}
+
+/* Стиль, когда до намаза остается меньше 20 минут (капсула станет оранжевой) */
+#custom-prayer.warning {
+    background-color: #ff9800; /* Фон капсулы становится оранжевым */
+    color: #111111;            /* Текст становится темным для читаемости */
+    font-weight: bold;
+    animation: prayer-blink 2s linear infinite;
+}
+
+@keyframes prayer-blink {
+    50% { opacity: 0.7; }
+}
+
+
 /* ───────── Tooltips ───────── */
 tooltip {
   background: rgba(20, 20, 20, 0.9);

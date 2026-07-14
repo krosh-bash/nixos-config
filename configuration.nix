@@ -10,6 +10,8 @@
     ./keyboard.nix
     ./systemd-services.nix
     ./modules/vim/nixvim.nix    
+    ./modules/namaz/namaz.nix
+
     
     # ОБЯЗАТЕЛЬНО: Подключаем модуль home-manager на уровне системы
     # Если вы используете Flakes, это может быть: inputs.home-manager.nixosModules.home-manager
@@ -28,9 +30,27 @@
     "/home" = { options = [ "compress=zstd" ]; };
     "/nix" = { options = [ "compress=zstd" "noatime" ]; };
   };
+  
+  # Настройка zram-раздела
+  zramSwap = {
+	enable = true;
+  
+  # Выделяем ровно 4 ГБ под zram
+  # (Вместо memoryPercent используем фиксированный объем в мегабайтах: 4 * 1024)
+	memoryPercent = 50;
+	#memoryMax = 4096; 
+  
+  # Задаем высокий приоритет, чтобы система использовала его в первую очередь
+  	priority = 100;
+  
+  # Алгоритм сжатия zstd (оптимальный баланс скорости и сжатия)
+  	algorithm = "zstd";
+  };
+
 
   swapDevices = [{
     device = "/var/lib/swapfile";
+    priority = 10;
     size = 16 * 1024;
   }];
 
@@ -76,17 +96,35 @@
   # =========================================================================
   # 6. Аппаратные службы (Bluetooth, Диски, Графика)
   # =========================================================================
+  # По умолчанию Packet использует статический TCP-порт 9300 для приема файлов
+  networking.firewall = {
+    allowedTCPPorts = [ 9300 ];
+    allowedUDPPorts = [ 9300 ]; # Расскомментируйте, если возникнут проблемы
+  };
+
+
+  hardware.bluetooth.powerOnBoot = true;
   hardware.bluetooth.enable = true;
   services.blueman.enable = true;
   services.udisks2.enable = true;
   hardware.graphics.enable32Bit = true;
+  
+   services.avahi = {
+    enable = true;
+    nssmdns4 = true;
+    publish = {
+      enable = true;
+      addresses = true;
+      userServices = true;
+    };
+  };
 
   # =========================================================================
   # 7. Системные утилиты и окружение
   # =========================================================================
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
   nixpkgs.config.allowUnfree = true;
-
+  services.namaz-alerts.enable = true;
   
   programs.nix-ld.enable = true;
   services.envfs.enable = true;
@@ -158,6 +196,6 @@
   # services.happ.enable = true;
 
   # Версия состояния дистрибутива
-  system.stateVersion = "24.11";
+  system.stateVersion = "26.05";
 }
 

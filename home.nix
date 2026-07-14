@@ -11,7 +11,7 @@ in
 
   home.username = "krosh";
   home.homeDirectory = "/home/krosh";
-  home.stateVersion = "24.11";
+  home.stateVersion = "26.05";
 
   stylix = {
     enable = true;
@@ -31,7 +31,12 @@ in
       terminal = 0.75;
     };
     targets = {
-      gtk.enable = true;
+      firefox.enable = false;
+      zen-browser.enable = false;
+      xresources.enable = false;
+#      gnome.enable = false;
+      gtk.enable = false;
+      qt.enable = false;
       mako.enable = true;
       rofi.enable = true;
 #      niri.enable = true;   

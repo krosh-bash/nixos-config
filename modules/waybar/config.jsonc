@@ -52,6 +52,7 @@
   ],
 
   "modules-right": [
+    "custom/prayer",
     "niri/language",
     "cpu",
     "memory",
@@ -63,8 +64,15 @@
     // "tray",
     "custom/power"
     ],
-  
-  "niri/language": {
+ 
+ "custom/prayer": {
+    "format": "{}",
+    "return-type": "json",
+    "exec": "prayer-status",
+    "interval": 60,
+    "tooltip": true
+},
+"niri/language": {
     "format": "{}",
     "format-en": "US",
     "format-ru": "BA",

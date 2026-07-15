@@ -152,6 +152,17 @@ home.sessionVariables = {
     enable = true;
 
     settings = {
+      preview = {
+      # Явно задаем протокол ueberzug для работы поверх Alacritty
+      preview_cmd = "chafa";
+      
+      # Задержка в мс перед рендерингом (убирает мерцание при быстром скролле)
+      image_delay = 30;
+      
+      # Максимальные размеры для превью (ширина и высота)
+      max_width = 1200;
+      max_height = 1200;
+    };
       opener = {
         edit = [
           { run = ''nvim "$@"''; block = true; for = "unix"; }

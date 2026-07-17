@@ -1,131 +1,57 @@
 { pkgs, config, lib, ... }:
 
-let
-  c = config.lib.stylix.colors;
-  terminalFont = config.stylix.fonts.monospace;
-  terminalFontSize = config.stylix.fonts.sizes.terminal;
-  terminalOpacity = config.stylix.opacity.terminal;
-in
 {
-  imports = [ ./modules/niri/common.nix ];
+  imports = [
+    ./modules/matugen.nix   # подключаем модуль Matugen
+  ];
 
   home.username = "krosh";
   home.homeDirectory = "/home/krosh";
   home.stateVersion = "26.05";
 
-  stylix = {
-    enable = true;
-    image = ./wallpaper.jpg;
-    polarity = "dark";
-    fonts = {
-      monospace = {
-        package = pkgs.nerd-fonts.jetbrains-mono;
-        name = "JetBrainsMono Nerd Font";
-      };
-      sizes = {
-        terminal = 11;
-        popups = 11;
-      };
-    };
-    opacity = {
-      terminal = 0.75;
-    };
-    targets = {
-      firefox.enable = false;
-      zen-browser.enable = false;
-      xresources.enable = false;
-#      gnome.enable = false;
-      gtk.enable = false;
-      qt.enable = false;
-      mako.enable = true;
-      rofi.enable = true;
-#      niri.enable = true;   
+  # =========================================================================
+  # 1. Глобальные настройки dconf (темный режим)
+  # =========================================================================
+  dconf.settings = {
+    "org/gnome/desktop/interface" = {
+      color-scheme = "prefer-dark";
     };
   };
 
+  # =========================================================================
+  # 2. Симлинки для rmpc (не относятся к Matugen)
+  # =========================================================================
+home.file.".config/rmpc".source = config.lib.file.mkOutOfStoreSymlink "/etc/nixos/modules/rmpc";
+  # =========================================================================
+  # 3. Пакеты пользователя (без matugen – он уже в модуле)
+  # =========================================================================
   home.packages = with pkgs; [
-    alacritty
-    waybar
-    pfetch
-    udiskie
-    mako
     fuzzel
-    cliphist
-    pavucontrol
-    bluez
-    libnotify
-    swaylock
-    swaybg           # <-- добавляем
+    rofi
+    mako
+    alacritty
+    niri
+    obsidian
+    pfetch
+    rmpc
+    # waybar – закомментирован
   ];
 
-  programs.bash = {
+  # =========================================================================
+  # 4. Настройки zsh
+  # =========================================================================
+  programs.zsh = {
     enable = true;
-    initExtra = "pfetch";
-  };
-
-  programs.alacritty = {
-    enable = true;
-    settings = {
-      window = {
-        blur = true;
-        dimensions = {
-          columns = 100;
-          lines = 25;
-        };
-        opacity = terminalOpacity;
-      };
-      colors = lib.mkForce {
-        primary = {
-          background = "#${c.base00}";
-          foreground = "#${c.base05}";
-        };
-        cursor = {
-          text = "#${c.base00}";
-          cursor = "#${c.base05}";
-        };
-        normal = {
-          black   = "#${c.base00}";
-          red     = "#${c.base08}";
-          green   = "#${c.base0B}";
-          yellow  = "#${c.base0A}";
-          blue    = "#${c.base0D}";
-          magenta = "#${c.base0E}";
-          cyan    = "#${c.base0C}";
-          white   = "#${c.base05}";
-        };
-        bright = {
-          black   = "#${c.base03}";
-          red     = "#${c.base08}";
-          green   = "#${c.base0B}";
-          yellow  = "#${c.base0A}";
-          blue    = "#${c.base0D}";
-          magenta = "#${c.base0E}";
-          cyan    = "#${c.base0C}";
-          white   = "#${c.base07}";
-        };
-        indexed_colors = [
-          { index = 16; color = "#${c.base09}"; }
-          { index = 17; color = "#${c.base0F}"; }
-        ];
-      };
-      font = {
-        normal = {
-          family = terminalFont.name;
-          style = "Regular";
-        };
-        bold = {
-          family = terminalFont.name;
-          style = "Bold";
-        };
-        italic = {
-          family = terminalFont.name;
-          style = "Italic";
-        };
-        size = terminalFontSize;
-      };
+    oh-my-zsh = {
+      enable = true;
+      theme = "robbyrussell";
+      plugins = [ "git" "kubectl" ];
     };
   };
 
+  # =========================================================================
+  # 5. Остальное (GTK, курсор, переменные, ассоциации)
+  # =========================================================================
   home.pointerCursor = {
     enable = true;
     name = "phinger-cursors-light";
@@ -143,45 +69,9 @@ in
       package = pkgs.phinger-cursors;
     };
   };
-  
-home.sessionVariables = {
+
+  home.sessionVariables = {
     EDITOR = "nvim";
-  };
-
-  programs.yazi = {
-    enable = true;
-
-    settings = {
-      preview = {
-      # Явно задаем протокол ueberzug для работы поверх Alacritty
-      preview_cmd = "chafa";
-      
-      # Задержка в мс перед рендерингом (убирает мерцание при быстром скролле)
-      image_delay = 30;
-      
-      # Максимальные размеры для превью (ширина и высота)
-      max_width = 1200;
-      max_height = 1200;
-    };
-      opener = {
-        edit = [
-          { run = ''nvim "$@"''; block = true; for = "unix"; }
-        ];
-      };
-
-      open = {
-        prepend_rules = [
-          { url = "*.txt";  use = "edit"; }
-          { url = "*.md";   use = "edit"; }
-          { url = "*.json"; use = "edit"; }
-          { url = "*.toml"; use = "edit"; }
-          { url = "*.y*ml"; use = "edit"; }
-          { url = "*.sh";   use = "edit"; }
-          { url = "*.lua";  use = "edit"; }
-          # Добавьте все нужные расширения
-        ];
-      };
-    };
   };
 
   xdg.mimeApps = {
@@ -193,7 +83,4 @@ home.sessionVariables = {
       "image/webp" = [ "imv-dir.desktop" ];
     };
   };
-
-
-
 }

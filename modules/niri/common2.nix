@@ -1,6 +1,10 @@
-      { config, pkgs, lib, ... }:
+{ config, pkgs, lib, ... }:
 
+let
+  c = config.lib.stylix.colors;   # цвета, извлечённые из обоев
+in
 {
+  # Генерируем полный конфиг с подстановкой цветов
   xdg.configFile."niri/config.kdl" = {
     text = ''
       // Input device configuration.
@@ -11,6 +15,8 @@
             variant ",bak"
             options "grp:caps_toggle"
           }
+          // Enables numlock on startup
+          // numlock
         }
 
         touchpad {
@@ -19,27 +25,65 @@
           accel-profile "adaptive"
         }
 
+        mouse {
+          // off
+          // natural-scroll
+          // accel-speed 0.2
+          // accel-profile "flat"
+          // scroll-method "no-scroll"
+        }
+
+        trackpoint {
+          // off
+          // natural-scroll
+          // accel-speed 0.2
+          // accel-profile "flat"
+          // scroll-method "on-button-down"
+          // scroll-button 273
+          // scroll-button-lock
+          // middle-emulation
+        }
+
+        // warp-mouse-to-focus
         focus-follows-mouse max-scroll-amount="0%"
       }
 
-      // Подключаем блок layout с цветами от Matugen
-      include "colors.kdl"
+layout {
+  gaps 3
+  center-focused-column "never"
 
-      // Глобальные настройки отступов (так как в colors.kdl их нет)
-      layout {
-        gaps 3
-        center-focused-column "never"
-        preset-column-widths {
-          proportion 0.5
-          proportion 0.66
-          proportion 0.33
-        }
-        preset-window-heights {
-          proportion 0.5
-          proportion 1.0
-        }
-        default-column-width { proportion 0.5; }
-      }
+  preset-column-widths {
+    proportion 0.5
+    proportion 0.66
+    proportion 0.33
+  }
+
+  preset-window-heights {
+    proportion 0.5
+    proportion 1.0
+  }
+
+  default-column-width { proportion 0.5; }
+
+  // Отключаем фокус-кольцо полностью
+  focus-ring {
+    off
+  }
+
+  // Настраиваем границу
+  border {
+    width 3
+    inactive-color "#${c.base03}"
+    active-color "#${c.base0D}"
+    urgent-color "#${c.base08}"
+  }
+
+  // Тени отключены
+  shadow {
+    off
+  }
+}
+
 
       spawn-at-startup "gnome-keyring"
       spawn-at-startup "hypridle"
@@ -236,8 +280,8 @@
         Mod+Shift+Ctrl+J     { move-column-to-monitor-down; }
         Mod+Shift+Ctrl+K     { move-column-to-monitor-up; }
         Mod+Shift+Ctrl+L     { move-column-to-monitor-right; }
-      
-         Mod+Shift+Page_Down { move-workspace-down; }
+
+        Mod+Shift+Page_Down { move-workspace-down; }
         Mod+Shift+Page_Up   { move-workspace-up; }
         Mod+Shift+U         { move-workspace-down; }
         Mod+Shift+I         { move-workspace-up; }
@@ -318,4 +362,3 @@
     force = true;
   };
 }
-

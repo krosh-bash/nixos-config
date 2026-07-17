@@ -3,11 +3,11 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
-    stylix.url = "github:danth/stylix";
+    matugen.url = "github:InioX/matugen"; # <-- Официальный Matugen
     tg-ws-proxy.url = "github:pialtor/tg-ws-proxy-flake";
     zen-browser.url = "github:youwen5/zen-browser-flake";
     zen-browser.inputs.nixpkgs.follows = "nixpkgs";
-      nixvim = {
+    nixvim = {
       url = "github:nix-community/nixvim";
       inputs.nixpkgs.follows = "nixpkgs";
     };
@@ -17,7 +17,7 @@
     };
   };
 
-  outputs = { self, nixpkgs, stylix, tg-ws-proxy, zen-browser, home-manager, nixvim, ... }:
+  outputs = { self, nixpkgs, matugen, tg-ws-proxy, zen-browser, home-manager, nixvim, ... }:
     let
       system = "x86_64-linux";
       username = "krosh";
@@ -48,20 +48,20 @@
             { nixpkgs.overlays = [ zen-overlay ]; }
             ./configuration.nix
             nixvim.nixosModules.nixvim
-	    home-manager.nixosModules.home-manager
+            home-manager.nixosModules.home-manager
             {
               home-manager = {
                 useGlobalPkgs = true;
                 useUserPackages = true;
                 backupFileExtension = "backup";
-                extraSpecialArgs = { inherit hostname; };
+                # Пробрасываем matugen, чтобы взять пакет matugen.packages.''${system}.default
+                extraSpecialArgs = { inherit hostname matugen; };
                 users.${username} = {
                   imports = [
-		    ./modules/niri/common.nix
+                    ./modules/niri/common.nix
                     ./home.nix
-                    stylix.homeModules.stylix   # <-- модуль Stylix только здесь
                   ] ++ extraHomeModules;
-                  xdg.configFile = generateWaybarFiles ./modules/waybar;                  
+                  xdg.configFile = generateWaybarFiles ./modules/waybar;
                 };
               };
             }
@@ -78,3 +78,4 @@
       apps.${system}.tg-ws-proxy = tg-ws-proxy.apps.${system}.default;
     };
 }
+

@@ -11,7 +11,7 @@
     ./systemd-services.nix
     ./modules/vim/nixvim.nix
     ./modules/namaz/namaz.nix
-
+    ./modules/rofi/rofi.nix 
     # ОБЯЗАТЕЛЬНО: Подключаем модуль home-manager на уровне системы
     # Если вы используете Flakes, это может быть: inputs.home-manager.nixosModules.home-manager
     # Если без Flakes (каналы), то строка ниже:
@@ -47,7 +47,11 @@ services.mpd = {
     ];
   };
 };
+ modules.rofi = {
+    enable = true;
+#    matugenIntegration.enable = true;
 
+    };
 # Настройка zram-раздела
   zramSwap = {
     enable = true;

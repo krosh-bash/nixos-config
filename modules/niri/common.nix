@@ -47,7 +47,7 @@
       spawn-at-startup "wl-paste" "--type" "text" "--watch" "cliphist" "store"
       spawn-at-startup "wl-paste" "--type" "image" "--watch" "cliphist" "store"
       spawn-at-startup "waybar"
-      spawn-at-startup "/etc/nixos/scripts/random-swaybg"
+     // spawn-at-startup "/etc/nixos/scripts/random-swaybg"
       spawn-at-startup "swaync"
       spawn-at-startup "udiskie" "-n"
 
@@ -189,7 +189,7 @@
         Mod+Z { spawn "/etc/nixos/scripts/rofi-clipboard"; }
         Mod+Shift+Escape { spawn "/etc/nixos/scripts/rofi-power"; }
         Mod+Shift+S { spawn "udiskie-umount" "-a"; }
-        Mod+A { spawn "/etc/nixos/scripts/random-swaybg"; }
+        Mod+A { spawn "/etc/nixos/scripts/random-matugen.sh"; }
         Mod+Shift+B { spawn "/etc/nixos/scripts/rofi-bluetooth"; }
 
         XF86AudioRaiseVolume allow-when-locked=true { spawn-sh "wpctl set-volume @DEFAULT_AUDIO_SINK@ 0.05+ -l 1.0"; }

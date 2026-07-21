@@ -47,10 +47,10 @@
       spawn-at-startup "wl-paste" "--type" "text" "--watch" "cliphist" "store"
       spawn-at-startup "wl-paste" "--type" "image" "--watch" "cliphist" "store"
       spawn-at-startup "waybar"
-     // spawn-at-startup "/etc/nixos/scripts/random-swaybg"
+      spawn-at-startup "/etc/nixos/scripts/random-matugen"
       spawn-at-startup "swaync"
       spawn-at-startup "udiskie" "-n"
-
+      spawn-at-startup "packet" "--background"
       hotkey-overlay {
         // skip-at-startup
       }

@@ -98,7 +98,9 @@
         nix = [ "nix-linter" ];
       };
     };
-
+    
+    # 2. Включаем синхронизацию с системным буфером
+    opts.clipboard = "unnamedplus"; # или opts.clipboard = [ "unnamedplus" ];
     # Пользовательские настройки
     extraConfigLua = ''
       vim.opt.number = true

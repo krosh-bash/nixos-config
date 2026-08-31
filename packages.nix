@@ -1,5 +1,4 @@
-{ config, pkgs, tg-ws-proxy, ... }:
-
+{ config, pkgs, inputs, tg-ws-proxy, zapret-rust, ... }:
 {
   environment.systemPackages = with pkgs; [
     # --- Графическое окружение, панели и лаунчеры ---
@@ -10,7 +9,46 @@
     swaybg                # Утилита для установки обоев рабочего стола в Wayland
     xwayland-satellite    # Инструмент для более эффективного запуска X11-приложений в Wayland
     chafa
+kdePackages.kdeconnect-kde
+zapret-rust.packages.${pkgs.system}.default
+gnome-keyring
+    libsecret
+glfw
+ghostty
+mesa
+  libX11
+  libXcursor
+  libXrandr
+  libXi
+  libXxf86vm
+  libxkbcommon
+  libXinerama
+  libglvnd
+  libdrm
+  libgbm
+  nss
+  alsa-lib
+flatpak
+jdk17_headless
+jdk17
+fuse
+appimage-run
 pdfgrep
+kid3
+strawberry
+(inputs.noctalia.packages.${pkgs.stdenv.hostPlatform.system}.default)
+bitwarden-cli
+ gramps
+  graphviz
+pinentry-gnome3
+ncdu
+python3
+  python3Packages.virtualenv
+supersonic
+gvfs # Основной пакет
+  libmtp # Библиотека для работы с MTP
+#  jmtpfs # Утилита для ручного монтирования (полезно для диагностики)
+  thunar-volman # Менеджер съёмных носителей для Thunar
 # --- Терминал, командная оболочка и утилиты CLI ---
     alacritty             # Быстрый эмулятор терминала с ускорением на видеокарте (GPU)
     zsh                   # Продвинутая интерактивная командная оболочка
@@ -24,10 +62,9 @@ pdfgrep
     fzf                   # Интерактивный консольный поисковик (Fuzzy Finder)
     dua                   # Аналог ncdu
     smartmontools
-    rmpc
-    mpc 
     w3m
-    wf-recorder
+    aria2
+    ariang
 # --- Системные службы, диски и буфер обмена ---
     udisks2               # Системная служба для управления дисками и накопителями
     udiskie               # Фоновый демон для автоматического монтирования флешек
@@ -43,19 +80,20 @@ pdfgrep
     packet                # Графический клиент Packet для Quick Share
 
     # --- Интернет, общение и работа с текстом ---
-#    firefox               # Классический веб-браузер Firefox
+    firefox               # Классический веб-браузер Firefox
     zen-browser           # Современный приватный браузер, оптимизированный под Wayland
     telegram-desktop      # Официальный клиент мессенджера Telegram
     obsidian              # Мощное приложение для ведения заметок и личной базы знаний
-    libreoffice-qt        # Офисный пакет (документы, таблицы) с интеграцией под Qt-интерфейс
-    hunspell              # Программа для автоматической проверки орфографии в текстах
-    hunspellDicts.ru_RU   # Словарь для проверки орфографии на русском языке
-    hunspellDicts.en_US   # Словарь для проверки орфографии на английском языке
+    #libreoffice-qt        # Офисный пакет (документы, таблицы) с интеграцией под Qt-интерфейс
+    #hunspell              # Программа для автоматической проверки орфографии в текстах
+    #hunspellDicts.ru_RU   # Словарь для проверки орфографии на русском языке
+    #hunspellDicts.en_US   # Словарь для проверки орфографии на английском языке
 
     # --- Игры и развлечения ---
     steam                 # Игровая платформа Steam
     steam-run             # Утилита NixOS для запуска бинарных файлов в окружении Steam FHS
     mpv                   # Высокопроизводительный медиаплеер для видео и музыки
+    pkgs.mpvScripts.mpris
     # Рекомендуемый пакет для 32-бит и 64-бит приложений
   wineWow64Packages.stable 
   
@@ -83,7 +121,7 @@ pdfgrep
   fonts.packages = with pkgs; [
 
     # Современные качественные шрифты с поддержкой башкирского:
-    jetbrains-mono
+#    jetbrains-mono
     fira-code
     inter
     # Базовые латиница + кириллица
@@ -110,7 +148,7 @@ pdfgrep
   fonts.fontconfig = {
     enable = true;
     defaultFonts = {
-      monospace = ["JetBrainsMono Nerd Font" "Hack Nerd Font" "DejaVu Sans Mono" "Noto Sans Mono" ];
+      monospace = ["Hack Nerd Font" "DejaVu Sans Mono" "Noto Sans Mono" ];
       sansSerif = ["Inter" "Noto Sans" "DejaVu Sans" ];
       serif = [ "Noto Serif" "DejaVu Serif" ];
       emoji = [ "Noto Color Emoji" ];

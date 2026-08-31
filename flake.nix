@@ -7,29 +7,37 @@
     tg-ws-proxy.url = "github:pialtor/tg-ws-proxy-flake";
     zen-browser.url = "github:youwen5/zen-browser-flake";
     zen-browser.inputs.nixpkgs.follows = "nixpkgs";
+    nixos-grub-themes.url = "github:jeslie0/nixos-grub-themes";
+    zapret-rust.url = "github:Sergeydigl3/zapret-discord-youtube-rust";
+     # Добавляем вход noctalia
+    noctalia = {
+      url = "github:noctalia-dev/noctalia";
+      inputs.nixpkgs.follows = "nixpkgs";   # использует ваш nixpkgs
+    };
     nixvim = {
       url = "github:nix-community/nixvim";
-      inputs.nixpkgs.follows = "nixpkgs";
     };
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    # Добавляем rust-overlay для тулчейна Rust
     rust-overlay = {
       url = "github:oxalica/rust-overlay";
-      inputs = {
-        nixpkgs.follows = "nixpkgs";
-        flake-utils.follows = ""; # отключаем flake-utils, т.к. мы не используем его
-      };
+      inputs.nixpkgs.follows = "nixpkgs";
+      # Удалена строка flake-utils.follows = "";
     };
   };
 
-  outputs = { self, nixpkgs, matugen, tg-ws-proxy, zen-browser, home-manager, nixvim, rust-overlay, ... }:
+  outputs = { self, nixpkgs, matugen, tg-ws-proxy, zen-browser, home-manager, nixvim, rust-overlay, noctalia, nixos-grub-themes, zapret-rust, ... }:
     let
       system = "x86_64-linux";
       username = "krosh";
       lib = nixpkgs.lib;
+
+      # ← ВСЕ ВХОДЫ СОБИРАЕМ В ОДИН АТРИБУТ
+      allInputs = {
+        inherit nixpkgs matugen tg-ws-proxy zen-browser home-manager nixvim rust-overlay noctalia nixos-grub-themes;
+      };
 
       # Оверлей для Zen Browser
       zen-overlay = final: prev: {
@@ -48,12 +56,14 @@
           builtins.listToAttrs (map toWaybarConfig allFiles);
 
       # Функция создания конфигурации NixOS
-      mkHost = hostname: extraSystemModules: extraHomeModules:
+      mkHost = hostname: extraSystemModules: extraHomeModules: inputs:
         nixpkgs.lib.nixosSystem {
           inherit system;
           specialArgs = {
+            inherit inputs;
             inherit tg-ws-proxy;
             hostName = hostname;
+            zapret-rust = zapret-rust;
           };
           modules = [
             { nixpkgs.overlays = [ zen-overlay ]; }
@@ -91,7 +101,7 @@
     in {
       # Конфигурации NixOS
       nixosConfigurations = {
-        krosh = mkHost "krosh" [ ] [ ];
+        krosh = mkHost "krosh" [ ] [ ] allInputs;   # ← теперь передаём allInputs
       };
 
       # Пакеты и приложения

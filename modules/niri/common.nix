@@ -46,7 +46,7 @@
       spawn-at-startup "xwayland-satellite"
       spawn-at-startup "wl-paste" "--type" "text" "--watch" "cliphist" "store"
       spawn-at-startup "wl-paste" "--type" "image" "--watch" "cliphist" "store"
-      spawn-at-startup "waybar"
+      spawn-at-startup "noctalia"
       spawn-at-startup "/etc/nixos/scripts/random-matugen"
       spawn-at-startup "swaync"
       spawn-at-startup "udiskie" "-n"
@@ -160,6 +160,10 @@
         match app-id=r#"^org\.wezfurlong\.wezterm$"#
         default-column-width {}
       }
+     window-rule {
+    match app-id="zen"  // или "Zen Browser"
+    opacity 1.0
+}
 
       window-rule {
         match app-id=r#"firefox$"# title="^Picture-in-Picture$"
@@ -174,23 +178,23 @@
       }
 
       // Пример скругления углов – закомментирован
-      /-window-rule {
+      window-rule {
         geometry-corner-radius 12
         clip-to-geometry true
       }
 
       binds {
         Mod+Shift+Slash { show-hotkey-overlay; }
-        Mod+Q { spawn "alacritty" "-e" "yazi"; }
-        Mod+B { spawn "zen-browser"; }
-        Mod+Shift+Return hotkey-overlay-title="Open a Terminal: alacritty" { spawn "alacritty"; }
-        Mod+D { spawn "rofi" "-show" "drun"; }
-        Mod+N hotkey-overlay-title="Notification center" { spawn-sh "swaync-client -t"; }
-        Mod+Z { spawn "/etc/nixos/scripts/rofi-clipboard"; }
-        Mod+Shift+Escape { spawn "/etc/nixos/scripts/rofi-power"; }
+        Mod+Q { spawn "ghostty" "-e" "yazi"; }
+        Mod+B { spawn "zen"; }
+        Mod+Shift+Return hotkey-overlay-title="Open a Terminal: Ghostty" { spawn "ghostty"; }
+        Mod+Shift+O {spawn "alacritty";}
+Mod+D hotkey-overlay-title="Toggle Launcher" { spawn "noctalia" "msg" "panel-toggle" "launcher"; }
+Mod+Z hotkey-overlay-title="Toggle Clipboard" { spawn "noctalia" "msg" "panel-toggle" "clipboard"; }
+Mod+N hotkey-overlay-title="Toggle Notifications" { spawn "noctalia" "msg" "panel-toggle" "notifications"; }
+
         Mod+Shift+S { spawn "udiskie-umount" "-a"; }
-        Mod+A { spawn "/etc/nixos/scripts/random-matugen.sh"; }
-        Mod+Shift+B { spawn "/etc/nixos/scripts/rofi-bluetooth"; }
+        Mod+A { spawn "mpv" "/home/krosh/Music/yandex/ilyas"; }
 
         XF86AudioRaiseVolume allow-when-locked=true { spawn-sh "wpctl set-volume @DEFAULT_AUDIO_SINK@ 0.05+ -l 1.0"; }
         XF86AudioLowerVolume allow-when-locked=true { spawn-sh "wpctl set-volume @DEFAULT_AUDIO_SINK@ 0.05-"; }
